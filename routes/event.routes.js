@@ -5,7 +5,7 @@ const Kiez = require('../models/Kiez.model');
 
 
 // POST /api/events
-router.post("/events", (req, res) => {
+router.post("/", (req, res) => {
     const {name, date, address, description, image, category, kiez: kiezId} = req.body;
 
     if (!name || !date || !address || !description || !kiezId){
