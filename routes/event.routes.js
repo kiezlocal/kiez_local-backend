@@ -3,11 +3,12 @@ const router = express.Router();
 const Event = require("../models/Event.model");
 const Kiez = require('../models/Kiez.model');
 const mongoose = require("mongoose");
+const { errorHandler } = require('../middleware/jwt.middleware');
 
 
 
 // POST /api/events
-router.post("/", (req, res) => {
+router.post("/events", (req, res, next) => {
     const {name, date, address, description, image, category, kiez: kiezId} = req.body;
 
     if (!name || !date || !address || !description || !kiezId){
@@ -20,14 +21,15 @@ router.post("/", (req, res) => {
     .then( response => {
         res.status(201).json(response);
     })
-    .catch(error => {
-        res.status(500).json({message: "Error while creating event", error});
+    .catch(err => {
+        next(err);
+        
     });
 
 });
 //GET all Events
 
-router.get("/", (req, res) => {
+router.get("/", (req, res, next) => {
     Event.find()
     .then((event) => res.status(200).json(event))
     .catch((err) => {
@@ -47,9 +49,8 @@ router.put("/:eventId", (req, res) =>{
 
     Event.findByIdAndUpdate(eventId, req.body, {new:true})
     .then((updatedEvent) => res.json(updatedEvent))
-    .catch((err) => {
-        console.log("Error while updating the project", err);
-      res.status(500).json({ message: "Error while updating the event." });
+    .catch(err => {
+       nest(err);
     });
 });
 
@@ -64,14 +65,19 @@ router.delete("/:eventId", (req, res) => {
     }
 
     Event.findByIdAndDelete(eventId)
-    .then(() => 
-        res.json({message: `Event with ${eventId} was removed successfully.`})
-    )
-    .catch((err) => {
-        console.log("Error while deleting the event", err);
-        res.status(500).json({ message: "Error while deleting the event" });
+    .then(event => {
+        if (!event) {
+            const error = new Error(`Event with ID ${eventId} not found.`);
+            error.status = 404;
+            throw error;
+        }
+        res.json({message: `Event with ${eventId} was removed successfully.`});
+    })
+    .catch(err => {
+        next(err);
 });
 });
+router.use(errorHandler);
 
 module.exports = router;
 

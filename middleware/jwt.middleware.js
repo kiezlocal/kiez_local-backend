@@ -23,7 +23,30 @@ function getTokenFromHeaders(req) {
   return null;
 }
 
+//Errorhandler for handling errors from one file
+function errorHandler(err, req, res, next) {
+  console.error(err.stack);
+
+  if (err.name === 'ValidationError') {
+    return res.status(400).json({ message: 'Validation Error', error: err.message });
+  }
+
+  if (err.name === 'CastError') {
+    return res.status(400).json({ message: 'Invalid ID format', error: err.message });
+  }
+
+  if (err.status) {
+    return res.status(err.status).json({ message: err.message });
+  }
+
+  res.status(500).json({
+    message: 'Something went wrong!',
+    error: err.message
+  });
+}
+
+
 // Export the middleware so that we can use it to create protected routes
 module.exports = {
-  isAuthenticated,
+  isAuthenticated, errorHandler
 };
