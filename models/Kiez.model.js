@@ -15,10 +15,10 @@ const kiezSchema = new Schema({
         type: String,
         default: "https://www.visitberlin.de/system/files/styles/visitberlin_bleed_header_visitberlin_mobile_1x/private/image/kollwitzkiez26_c_visitBerlin_Foto_Dagmar_Schwelle_DL_PPT_0.jpg"
     },
-    events: {
+    events: [{
         type: mongoose.Schema.Types.ObjectId,
         ref : "Event"
-    }
+    }]
 });
 
 // CREATE MODEL

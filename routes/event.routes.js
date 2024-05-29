@@ -4,15 +4,19 @@ const Event = require("../models/Event.model");
 const Kiez = require('../models/Kiez.model');
 
 
-router.post("/api/events/addevent", (req, res) => {
-    const {name, date, time, address, kiez, description, image, category} = req.body;
+// POST /api/events
+router.post("/events", (req, res) => {
+    const {name, date, address, description, image, category, kiez: kiezId} = req.body;
 
-    if (!name || !date || !time || !address || !kiez || !description){
+    if (!name || !date || !address || !description || !kiezId){
         return res.status(400).json({message: "Fields are required."});
     }
-    Event.create({name, date, time, address, kiez, description, image, category})
-    .then(event => {
-        res.status(201).json(event);
+    Event.create({name, date, address, description, image, category})
+    .then(newEvent => {
+        return Kiez.findByIdAndUpdate(kiezId,  { $push: { events: newEvent._id } }, {new: true})
+    })
+    .then( response => {
+        res.status(201).json(response);
     })
     .catch(error => {
         res.status(500).json({message: "Error while creating event", error});
@@ -21,3 +25,6 @@ router.post("/api/events/addevent", (req, res) => {
 });
 
 module.exports = router;
+
+
+
