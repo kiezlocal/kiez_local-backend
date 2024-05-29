@@ -17,7 +17,7 @@ const kiezSchema = new Schema({
     },
     events: {
         type: mongoose.Schema.Types.ObjectId,
-        ref : "Events"
+        ref : "Event"
     }
 });
 

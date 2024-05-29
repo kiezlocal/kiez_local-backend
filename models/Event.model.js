@@ -18,8 +18,8 @@ const eventSchema = new Schema(
             type: String,
             required: [true, "Address is required."],
         },
-        neighbourhood:{
-            type: mongoose.Schema.Types.ObjectId, ref: "Neighbourhood",
+        kiez:{
+            type: mongoose.Schema.Types.ObjectId, ref: "Kiez",
         },
         description:{
             type: String,
