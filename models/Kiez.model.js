@@ -13,7 +13,7 @@ const kiezSchema = new Schema({
     },
     image: {
         type: String,
-        default: "https://www.visitberlin.de/system/files/styles/visitberlin_bleed_header_visitberlin_mobile_1x/private/image/kollwitzkiez26_c_visitBerlin_Foto_Dagmar_Schwelle_DL_PPT_0.jpg"
+        default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQItGh26Ag_CQP6lMh3Sf1QxRDuu1bqs3G6ww&s"
     },
     events: [{
         type: mongoose.Schema.Types.ObjectId,
