@@ -73,6 +73,29 @@ router.put("/:eventId", (req, res) =>{
     });
 });
 
+// GET: event by Id
+router.get("/:eventId", (req, res) => {
+    const { eventId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(eventId)) {
+        res.status(400).json({ message: "Specified id is not valid." });
+        return;
+    }
+
+    Event.findById(eventId)
+        .then(event => {
+            if (!event) {
+                res.status(404).json({ message: "Event not found." });
+                return;
+            }
+            res.status(200).json(event);
+        })
+        .catch(err => {
+            res.status(500).json({ message: "Error while retrieving event.", type: err.message });
+        });
+});
+
+
 // DELETE: event by Id
 
 router.delete("/:eventId", (req, res) => {
