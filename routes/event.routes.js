@@ -8,13 +8,13 @@ const { errorHandler } = require('../middleware/jwt.middleware');
 
 
 // POST /api/events
-router.post("/events", (req, res, next) => {
+router.post("/", (req, res, next) => {
     const {name, date, address, description, image, category, kiez: kiezId} = req.body;
 
     if (!name || !date || !address || !description || !kiezId){
         return res.status(400).json({message: "Fields are required."});
     }
-    Event.create({name, date, address, description, image, category})
+    Event.create({name, date, address, description, image, category, kiez: kiezId})
     .then(newEvent => {
         return Kiez.findByIdAndUpdate(kiezId,  { $push: { events: newEvent._id } }, {new: true})
     })
@@ -37,6 +37,25 @@ router.get("/", (req, res, next) => {
     });
 });
 
+// router.get("/", (req, res, next) => {
+//     Event.find()
+//     .then(eventsFromDB => {
+//         events = eventsFromDB;
+//         return Kiez.find()
+//     })
+//     .then(kiezFromDB => {
+//         const eventsUpdated = events.map(event => {
+//             const eventKiez = kiezFromDB.find(k => k._id.toString() === event.kiez.toString());
+//             return {...event.toObject(), kiezName: eventKiez ? eventKiez.kiezName : "Unknown Kiez"};
+
+//         });
+//         res.status(200).json(eventsUpdated);
+//     })
+//     .catch((err) => {
+//         res.status(500).json({message: "Error while retreiving events.", type: err.message})
+// })
+
+// });
 // UPDATE: event by Id
 
 router.put("/:eventId", (req, res) =>{

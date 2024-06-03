@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+
 // CREATE SCHEMA
 const kiezSchema = new Schema({
     kiezName: {
