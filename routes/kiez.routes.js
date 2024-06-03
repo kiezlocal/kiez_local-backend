@@ -17,24 +17,22 @@ router.get("/", (req, res) => {
   });
 
   // GET : kiez by id
-
-  router.get("/:kiezId", (req, res) => {
-    Kiez.findById(req.params.kiezId)
-      .then((kiez) =>res.status(200).json(kiez))
+router.get("/:kiezId", (req, res) => {
+  Kiez.findById(req.params.kiezId)
+      .then((kiez) => res.status(200).json(kiez))
       .catch((err) =>
-        res.status(404).json({ message: "Error , in retriving a kiez" + err.message })
+          res.status(404).json({ message: "Error in retrieving a kiez" + err.message })
       );
-  });
+});
 
-  // PUT : update kiez
-  
-  router.put('/:kiezId', async (req, res) => {
-    try {
-        const updatedKiez = await Kiez.findByIdAndUpdate(req.params.kiezId, req.body, { new: true });
-        res.status(200).json(updatedKiez);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+// PUT : update kiez
+router.put('/:kiezId', async (req, res) => {
+  try {
+      const updatedKiez = await Kiez.findByIdAndUpdate(req.params.kiezId, req.body, { new: true });
+      res.status(200).json(updatedKiez);
+  } catch (err) {
+      res.status(500).json({ message: err.message });
+  }
 });
   
   module.exports = router;
