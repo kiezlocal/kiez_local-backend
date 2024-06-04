@@ -29,11 +29,41 @@ router.post("/", (req, res, next) => {
 });
 //GET all Events
 
+// router.get("/", (req, res, next) => {
+//     Event.find()
+//     .then((event) => res.status(200).json(event))
+//     .catch((err) => {
+//         res.status(500).json({message: "Error while retreiving events.", type: err.message})
+//     });
+// });
+
 router.get("/", (req, res, next) => {
+    let events;
+
     Event.find()
-    .then((event) => res.status(200).json(event))
+    .then(eventsFromDB => {
+        console.log('Events from DB:', eventsFromDB);
+        if (!eventsFromDB) {
+            throw new Error("No events found");
+        }
+        events = eventsFromDB;
+        return Kiez.find();
+    })
+    .then(kiezFromDB => {
+        console.log('Kiez from DB:', kiezFromDB);
+        if (!kiezFromDB) {
+            throw new Error("No kiez found");
+        }
+        const eventsUpdated = events.map(event => {
+            const eventKiez = kiezFromDB.find(k => k._id && event.kiez && k._id.toString() === event.kiez.toString());
+            console.log('Event Kiez:', eventKiez);
+            return { ...event.toObject(), kiez: eventKiez ? eventKiez.kiez : "Unknown Kiez" };
+        });
+        res.status(200).json(eventsUpdated);
+    })
     .catch((err) => {
-        res.status(500).json({message: "Error while retreiving events.", type: err.message})
+        console.error('Error while retrieving events:', err);
+        res.status(500).json({ message: "Error while retrieving events.", type: err.message });
     });
 });
 
