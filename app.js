@@ -14,11 +14,29 @@ const express = require("express");
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://kiez-local.netlify.app" // Add your Netlify frontend URL here
+];
 app.use(cors({
-    origin: [originUrl],
-  }));
+    origin: function (origin, callback) {
+        // Check if the incoming origin is in the allowedOrigins array
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    // credentials: true // Allow credentials if needed
+}));
 
-  app.use(express.json());
+
+
+// app.use(cors({
+//     origin: [originUrl],
+//   }));
+
+//   app.use(express.json());
 
 
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware

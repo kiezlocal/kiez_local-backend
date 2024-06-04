@@ -45,6 +45,11 @@ router.get("/", (req, res, next) => {
         if (!kiezFromDB) {
             throw new Error("No kiez found");
         }
+
+
+        res.json(events);
+        return;
+
         const eventsUpdated = events.map(event => {
             const eventKiez = kiezFromDB.find(k => k._id && event.kiez && k._id.toString() === event.kiez.toString());
             console.log('Event Kiez:', eventKiez);
