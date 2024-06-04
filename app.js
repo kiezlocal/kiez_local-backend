@@ -6,6 +6,7 @@ require("dotenv").config();
 require("./db");
 
 const cors = require('cors');
+const originUrl = process.env.ORIGIN || "http://localhost:5174";
 
 // Handles http requests (express is node js framework)
 // https://www.npmjs.com/package/express
@@ -14,7 +15,7 @@ const express = require("express");
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:5174',
+    origin: [originUrl],
   }));
 
   app.use(express.json());
