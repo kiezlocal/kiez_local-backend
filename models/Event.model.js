@@ -13,7 +13,7 @@ const eventSchema = new Schema(
             required: [true, "Date is required."],
         },
         startTime: {
-            type: String,
+            type: String, 
             required: [true, "Start time is required."],
         },
         address:{
@@ -31,6 +31,11 @@ const eventSchema = new Schema(
             type: String,
             enum: ['Music', 'Art', 'Local markets', 'Sport', 'Food&drinks', 'Events for kids', 'Tours', 'Social gatherings', 'Other'],
             required: [true, "Category is required."],
+        },
+        kiez: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Kiez',
+            required: [true, "Kiez is required."]
         }
     }
 );

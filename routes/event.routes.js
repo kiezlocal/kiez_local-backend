@@ -29,6 +29,7 @@ router.post("/", (req, res, next) => {
 });
 //GET all Events
 
+<<<<<<< Updated upstream
 // router.get("/", (req, res, next) => {
 //     Event.find()
 //     .then((event) => res.status(200).json(event))
@@ -65,7 +66,17 @@ router.get("/", (req, res, next) => {
         console.error('Error while retrieving events:', err);
         res.status(500).json({ message: "Error while retrieving events.", type: err.message });
     });
+=======
+router.get("/", async (req, res, next) => {
+    try {
+        const events = await Event.find().populate('kiez');  // Populate the kiez field
+        res.status(200).json(events);
+    } catch (err) {
+        res.status(500).json({ message: "Error while retrieving events.", type: err.message });
+    }
+>>>>>>> Stashed changes
 });
+
 
 // router.get("/", (req, res, next) => {
 //     Event.find()

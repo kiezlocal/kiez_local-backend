@@ -6,15 +6,14 @@ const router = express.Router();
 
 // GET : all Kieze
 
-router.get("/", (req, res) => {
-    Kiez.find()
-      .then((kiez) => res.status(200).json(kiez))
-      .catch((err) =>
-        res
-          .status(500)
-          .json({ message: "Error , while retreiving the kieze. " , type: err.message })
-      );
-  });
+router.get("/", (req, res, next) => {
+  Kiez.find()
+      .populate('events')  // This populates the events field with event data
+      .then(kiezList => res.status(200).json(kiezList))
+      .catch(err => {
+          res.status(500).json({ message: "Error while retrieving kiez information.", type: err.message });
+      });
+});
 
   // GET : kiez by id
 router.get("/:kiezId", (req, res) => {
