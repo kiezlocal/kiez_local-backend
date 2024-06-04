@@ -12,6 +12,10 @@ const eventSchema = new Schema(
             type: Date,
             required: [true, "Date is required."],
         },
+        startTime: {
+            type: String,
+            required: [true, "Start time is required."],
+        },
         address:{
             type: String,
             required: [true, "Address is required."],
