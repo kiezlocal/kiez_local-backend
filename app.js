@@ -6,7 +6,7 @@ require("dotenv").config();
 require("./db");
 
 const cors = require('cors');
-const originUrl = process.env.ORIGIN || "http://localhost:5174";
+const originUrl = process.env.ORIGIN || "http://localhost:5173";
 
 // Handles http requests (express is node js framework)
 // https://www.npmjs.com/package/express
