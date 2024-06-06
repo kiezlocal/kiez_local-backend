@@ -14,7 +14,7 @@ const kiezSchema = new Schema({
     },
     image: {
         type: String,
-        default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQItGh26Ag_CQP6lMh3Sf1QxRDuu1bqs3G6ww&s"
+        default: "/db/localkiez.png"
     },
     events: [{
         type: mongoose.Schema.Types.ObjectId,

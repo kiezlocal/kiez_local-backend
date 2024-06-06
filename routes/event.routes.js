@@ -111,7 +111,7 @@ router.put("/:eventId", (req, res) =>{
 });
 
 // GET: event by Id
-router.get("/:eventId", (req, res) => {
+router.get("/:eventId", async (req, res) => {
     const { eventId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(eventId)) {
@@ -119,18 +119,18 @@ router.get("/:eventId", (req, res) => {
         return;
     }
 
-    Event.findById(eventId)
-        .then(event => {
-            if (!event) {
-                res.status(404).json({ message: "Event not found." });
-                return;
-            }
-            res.status(200).json(event);
-        })
-        .catch(err => {
-            res.status(500).json({ message: "Error while retrieving event.", type: err.message });
-        });
+    try {
+        const event = await Event.findById(eventId).populate('kiez', 'kiezName');
+        if (!event) {
+            res.status(404).json({ message: "Event not found." });
+            return;
+        }
+        res.status(200).json(event);
+    } catch (err) {
+        res.status(500).json({ message: "Error while retrieving event.", type: err.message });
+    }
 });
+
 
 
 // DELETE: event by Id
