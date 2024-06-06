@@ -17,9 +17,10 @@ router.post("/", (req, res, next) => {
     Event.create({name, date, startTime, address, description, image, category, kiez: kiezId})
     .then(newEvent => {
         return Kiez.findByIdAndUpdate(kiezId,  { $push: { events: newEvent._id } }, {new: true})
+        .then(() => newEvent.populate('kiez'));
     })
-    .then( response => {
-        res.status(201).json(response);
+    .then(populatedEvent => {
+        res.status(201).json(populatedEvent);
     })
     .catch(err => {
         next(err);
@@ -32,6 +33,7 @@ router.get("/", (req, res, next) => {
     let events;
 
     Event.find()
+    .populate('kiez')
     .then(eventsFromDB => {
         console.log('Events from DB:', eventsFromDB);
         if (!eventsFromDB) {
@@ -113,6 +115,8 @@ router.put("/:eventId", (req, res) =>{
 // GET: event by Id
 router.get("/:eventId", async (req, res) => {
     const { eventId } = req.params;
+    // Event.findById(req.params.eventId)
+    // .populate('kiez')
 
     if (!mongoose.Types.ObjectId.isValid(eventId)) {
         res.status(400).json({ message: "Specified id is not valid." });
@@ -120,7 +124,7 @@ router.get("/:eventId", async (req, res) => {
     }
 
     try {
-        const event = await Event.findById(eventId).populate('kiez', 'kiezName');
+        const event = await Event.findById(eventId).populate('kiez');
         if (!event) {
             res.status(404).json({ message: "Event not found." });
             return;
