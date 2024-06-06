@@ -25,7 +25,8 @@ const eventSchema = new Schema(
             required: [true, "Description is required."],
         },
         image:{
-            type: String
+            type: String, 
+            default: "http://localhost:5173/src/assets/LocalKiez.png"
         },
         category:{
             type: String,
