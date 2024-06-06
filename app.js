@@ -1,6 +1,7 @@
 // ℹ️ Gets access to environment variables/settings
 // https://www.npmjs.com/package/dotenv
 require("dotenv").config();
+const jwt = require('jsonwebtoken');
 
 // ℹ️ Connects to the database
 require("./db");
@@ -36,7 +37,7 @@ app.use(cors({
 //     origin: [originUrl],
 //   }));
 
-//   app.use(express.json());
+app.use(express.json());
 
 
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
@@ -58,7 +59,23 @@ app.use('/api/kiez', kiezRouter);
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
-
+// Endpoint to verify JWT
+app.get('/auth/verify', (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+  
+    if (!token) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+  
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ message: 'Invalid token' });
+      }
+  
+      // Token is valid, return user data
+      return res.json({ user: decoded });
+    });
+  });
 
 
 
