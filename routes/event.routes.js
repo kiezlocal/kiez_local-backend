@@ -9,12 +9,12 @@ const { errorHandler } = require('../middleware/jwt.middleware');
 
 // POST /api/events
 router.post("/", (req, res, next) => {
-    const {name, date, startTime, address, description, image, category, kiez: kiezId} = req.body;
+    const {name, date, startTime, address, description, image, category, website, kiez: kiezId} = req.body;
 
-    if (!name || !date || !startTime || !address || !description || !kiezId){
+    if (!name || !date || !startTime || !address || !description || !website || !kiezId){
         return res.status(400).json({message: "Fields are required."});
     }
-    Event.create({name, date, startTime, address, description, image, category, kiez: kiezId})
+    Event.create({name, date, startTime, address, description, image, category, website, kiez: kiezId})
     .then(newEvent => {
         return Kiez.findByIdAndUpdate(kiezId,  { $push: { events: newEvent._id } }, {new: true})
         .then(() => newEvent.populate('kiez'));

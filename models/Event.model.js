@@ -36,7 +36,10 @@ const eventSchema = new Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Kiez',
             required: [true, "Kiez is required."]
-        }
+        },
+        website: {
+            type: String,
+        },
     }
 );
 
