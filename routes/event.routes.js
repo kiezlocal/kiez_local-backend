@@ -11,7 +11,7 @@ const { errorHandler } = require('../middleware/jwt.middleware');
 router.post("/", (req, res, next) => {
     const {name, date, startTime, address, description, image, category, website, kiez: kiezId} = req.body;
 
-    if (!name || !date || !startTime || !address || !description || !website || !kiezId){
+    if (!name || !date || !startTime || !address || !description || !kiezId){
         return res.status(400).json({message: "Fields are required."});
     }
     Event.create({name, date, startTime, address, description, image, category, website, kiez: kiezId})
