@@ -14,8 +14,8 @@ const kiezSchema = new Schema({
     },
     image: {
         type: String,
-        default: "/db/localkiez.png"
-    },
+        default: "http://localhost:5173/src/assets/LocalKiez.png"
+        },
     events: [{
         type: mongoose.Schema.Types.ObjectId,
         ref : "Event"
